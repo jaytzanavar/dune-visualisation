@@ -1,5 +1,4 @@
 import { Suspense, useEffect, useState } from 'react'
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 import Chart from './Components/testPieChart';
 import ClipLoader from "react-spinners/ClipLoader";
 

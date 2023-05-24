@@ -41,8 +41,8 @@ function App() {
 
   console.log('query data', queryData);
   return (
-    <div className='flex'>
-      <div className='flex flex-col w-full h-full items-center'>
+    <div className='flex flex-wrap'>
+      <div className='flex flex-col lg:flex-[50%] md:flex-[100%] items-center'>
         <div className='flex flex-col'>
           <p className='text-center text-lg text-white'>
             Top 50 stakers in Sdex
@@ -51,7 +51,7 @@ function App() {
             Dune Query : #{2377610}
           </p>
         </div>
-        <div className='w-[750px] h-[750px]'>
+        <div className='min-w-[48vw] min-h-[750px]'>
           <Suspense fallback={
             <div className='h-full w-full justify-center items-center text-white/80'>
               <ClipLoader
@@ -79,7 +79,7 @@ function App() {
         </div>
       </div>
 
-      <div className='flex-col max-h-[500px] w-[650px] px-3'>
+      <div className='flex-col max-h-[650px] lg:flex-[50%] md:flex-[100%] min-w-[48vw] px-3'>
         <div className='flex flex-col mb-8'>
           <p className='text-center text-lg text-white'>
             Total Stakers in Sdex {loading ? '-' : queryData.length}

@@ -15,7 +15,7 @@ function App() {
 
 
     setLoading(true);
-    fetch('https://dune-vis-srv.onrender.com/query' + 2377610).then(res => {
+    fetch('https://dune-vis-srv.onrender.com/query/' + 2377610).then(res => {
       console.log('res', res);
 
       return res.json()

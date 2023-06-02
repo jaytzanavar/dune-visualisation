@@ -9,22 +9,21 @@ function App() {
     name: '',
     value: 0,
   }])
+
   const [loading, setLoading] = useState(false);
 
-  const fetchDuneBasicDataFromServer = () => {
+  const fetchDuneVolumeFromServer = () => {
 
-
-    setLoading(true);
-    fetch('https://dune-vis-srv.onrender.com/query/' + 2377610).then(res => {
-      console.log('res', res);
-
+    console.log("Calling the bend");
+    fetch('http://localhost:8080/query/volume/' + 2507576).then(res => {
+      console.log("Hello");
       return res.json()
     }).then(data => {
       console.log("RECEIVED DATA", data);
-      if (data.result['rows']) {
-        const formatData = data.result['rows'].map((r: any) => {
+      if (data) {
+        const formatData = data.map((r: any) => {
           return {
-            name: r.staker,
+            day: r.staker,
             value: r.TotalSdexValueStaked
           }
         })
@@ -36,13 +35,15 @@ function App() {
   }
 
   useEffect(() => {
-    fetchDuneBasicDataFromServer()
+    console.log("START");
+    setLoading(true);
+    fetchDuneVolumeFromServer()
   }, [])
 
   console.log('query data', queryData);
   return (
-    <div className='flex flex-wrap'>
-      <div className='flex flex-col lg:flex-[50%] md:flex-[100%] items-center'>
+    <div className='flex flex-col md:flex-row  w-[100vw] '>
+      <div className='flex flex-col grow-[1] items-center'>
         <div className='flex flex-col'>
           <p className='text-center text-lg text-white'>
             Top 50 stakers in Sdex
@@ -51,7 +52,7 @@ function App() {
             Dune Query : #{2377610}
           </p>
         </div>
-        <div className='min-w-[48vw] min-h-[750px]'>
+        <div className=' min-h-[750px] min-w-[500px]'>
           <Suspense fallback={
             <div className='h-full w-full justify-center items-center text-white/80'>
               <ClipLoader
@@ -74,13 +75,13 @@ function App() {
               />
               Loading Chart...
             </div>}
-            {!loading && <Chart data={queryData.slice(0, 50)} />}
+            {/* {!loading && <Chart data={queryData.slice(0, 50)} />} */}
           </Suspense>
         </div>
       </div>
 
-      <div className='flex-col max-h-[650px] lg:flex-[50%] md:flex-[100%] min-w-[48vw] px-3'>
-        <div className='flex flex-col mb-8'>
+      <div className='flex-col grow-[1] max-h-[650px] px-3'>
+        <div className='flex flex-col mb-8 max-w-[400px]'>
           <p className='text-center text-lg text-white'>
             Total Stakers in Sdex {loading ? '-' : queryData.length}
           </p>

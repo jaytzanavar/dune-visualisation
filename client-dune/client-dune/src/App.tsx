@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
-import Chart from './Components/testPieChart';
+import VolumeBarChart from './Components/volumeBarChart';
 import ClipLoader from "react-spinners/ClipLoader";
 
 import './App.css'
@@ -10,12 +10,13 @@ function App() {
     value: 0,
   }])
 
+  const QUERY_SDEX_V_ID = 2632547;
   const [loading, setLoading] = useState(false);
 
   const fetchDuneVolumeFromServer = () => {
 
     console.log("Calling the bend");
-    fetch('http://localhost:8080/query/volume/' + 2507576).then(res => {
+    fetch('http://localhost:8080/query/volume/' + 2620571).then(res => {
       console.log("Hello");
       return res.json()
     }).then(data => {
@@ -23,8 +24,34 @@ function App() {
       if (data) {
         const formatData = data.map((r: any) => {
           return {
-            day: r.staker,
-            value: r.TotalSdexValueStaked
+            day: r.timestamp,
+            volume: r.volume,
+            priceUsd: r.price,
+            volumeValue: r.volume * r.price
+          }
+        })
+        setLoading(false);
+        setQueryData([...formatData])
+      }
+    })
+
+  }
+
+  const fetchSdexDuneVolumeFromServer = () => {
+
+    console.log("Calling the bend");
+    fetch('http://localhost:8080/query/volume/sdex/' + QUERY_SDEX_V_ID).then(res => {
+      console.log("Hello");
+      return res.json()
+    }).then(data => {
+      console.log("RECEIVED DATA", data);
+      if (data) {
+        const formatData = data.map((r: any) => {
+          return {
+            day: r.timestamp,
+            volume: r.volume,
+            priceUsd: r.price,
+            volumeValue: r.volume * r.price
           }
         })
         setLoading(false);
@@ -37,7 +64,8 @@ function App() {
   useEffect(() => {
     console.log("START");
     setLoading(true);
-    fetchDuneVolumeFromServer()
+    // fetchDuneVolumeFromServer()
+    fetchSdexDuneVolumeFromServer()
   }, [])
 
   console.log('query data', queryData);
@@ -46,10 +74,10 @@ function App() {
       <div className='flex flex-col grow-[1] items-center'>
         <div className='flex flex-col'>
           <p className='text-center text-lg text-white'>
-            Top 50 stakers in Sdex
+            Total Volume of SDEX
           </p>
           <p className='text-center text-lg text-white/40'>
-            Dune Query : #{2377610}
+            Dune Query : #{QUERY_SDEX_V_ID}
           </p>
         </div>
         <div className=' min-h-[750px] min-w-[500px]'>
@@ -75,7 +103,7 @@ function App() {
               />
               Loading Chart...
             </div>}
-            {/* {!loading && <Chart data={queryData.slice(0, 50)} />} */}
+            {!loading && <VolumeBarChart data={queryData} />}
           </Suspense>
         </div>
       </div>
@@ -83,21 +111,21 @@ function App() {
       <div className='flex-col grow-[1] max-h-[650px] px-3'>
         <div className='flex flex-col mb-8 max-w-[400px]'>
           <p className='text-center text-lg text-white'>
-            Total Stakers in Sdex {loading ? '-' : queryData.length}
+            Total Volume of tx At{loading ? '-' : queryData.length}
           </p>
-          <p className='text-center text-lg text-white/40'>
+          {/* <p className='text-center text-lg text-white/40'>
             Total Sdex staked : {loading ? '-' : queryData.reduce((acc, cur) => acc + cur.value, 0)}
-          </p>
+          </p> */}
         </div>
-        <div className='header font-bold px-4 flex justify-between'>
+        {/* <div className='header font-bold px-4 flex justify-between'>
           <div>
             Staker (addr)
           </div>
           <div>
             Sdex
           </div>
-        </div>
-        <div className='overflow-y-scroll px-4  max-h-[350px]'>
+        </div> */}
+        {/* <div className='overflow-y-scroll px-4  max-h-[350px]'>
           {loading ? (
             <div className="flex justify-center mt-3 animate-pulse "> fetching data... </div>
           ) :
@@ -108,7 +136,7 @@ function App() {
               </div>
             ))
           }
-        </div>
+        </div> */}
       </div>
 
 

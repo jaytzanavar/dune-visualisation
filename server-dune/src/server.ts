@@ -8,7 +8,7 @@ import checkRoute from "./routes/check";
 dotenv.config();
 const app = express();
 app.use(cors());
-const { API_KEY } = process.env;
+const { API_KEY2 } = process.env;
 const PORT = process.env.PORT || 3030;
 
 // Exclude the debug logs from lower level dependency.

@@ -1,6 +1,7 @@
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-export default function Chart({ data }: { data: any }) {
+export default function VolumeBarChart({ data }: { data: any }) {
+    console.log('data', data)
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -19,7 +20,7 @@ export default function Chart({ data }: { data: any }) {
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="volume" fill="#8884d8" />
-              
+
             </BarChart>
         </ResponsiveContainer>
     );
